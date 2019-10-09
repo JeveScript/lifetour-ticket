@@ -51,6 +51,9 @@
 </template>
 
 <script>
+import managerService from "@/global/service/manager.js";
+import DataStore from "@/global/storage/index.js";
+
 export default {
   data() {
     return {
@@ -74,15 +77,23 @@ export default {
       disabled: false
     };
   },
+  created: function() {
+    let token = DataStore.storage.get("token");
+    if (token) {
+      return this.$router.replace({ name: "Dashboard" });
+    }
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // let data = {
-          //   phone: this.passwordFrom.phone,
-          //   password: this.passwordFrom.password
-          // };
-          this.$router.replace({ name: "Dashboard" });
+          let data = {
+            phone: this.passwordFrom.phone,
+            password: this.passwordFrom.password
+          };
+          managerService.login(data).then(() => {
+            this.$router.replace({ name: "Dashboard" });
+          });
         }
       });
     }

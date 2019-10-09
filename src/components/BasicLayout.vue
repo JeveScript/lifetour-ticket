@@ -8,14 +8,14 @@
       <el-main class="page-mainer">
         <router-view></router-view>
       </el-main>
-      <Footer />
+      <!-- <Footer /> -->
     </el-container>
   </el-container>
 </template>
 
 <script>
 import Header from "./BasicLayoutHeader.vue";
-import Footer from "./BasicLayoutFooter.vue";
+// import Footer from "./BasicLayoutFooter.vue";
 import Sider from "./BasicLayoutSider.vue";
 
 export default {
@@ -26,7 +26,7 @@ export default {
   },
   components: {
     Header,
-    Footer,
+    // Footer,
     Sider
   }
 };

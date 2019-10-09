@@ -2,47 +2,48 @@
   <div class="page-container">
     <v-breadcrumb />
     <div class="page-content" v-loading="loading">
-      <div class="mb-20">
-        <el-button
-          type="primary"
-          plain
-          style="float: right;"
-          @click="handleLink"
-          >编辑</el-button
-        >
-      </div>
       <h3 class="sub-title">订单信息</h3>
       <div class="page-info">
         <el-row :gutter="20">
-          <el-col :span="8">卡券编号：{{ orderInfo.id }} </el-col>
+          <el-col :span="8">卡券编号：{{ orderInfo.findex }} </el-col>
+          <el-col :span="8">创建时间：{{ orderInfo.created_at }}</el-col>
           <el-col :span="8"
-            >创建时间：{{ orderInfo.created_at_display }}</el-col
-          >
-          <el-col :span="8">订单状态：{{ orderInfo.status_display }} </el-col>
+            >订单状态：{{ orderInfo.express_number ? "已发货" : "未发货" }}
+          </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8"> 快递编号：{{ orderInfo.express }} </el-col>
+          <el-col :span="8">
+            快递公司：{{ orderInfo.express_company || "未发货" }}
+          </el-col>
+          <el-col :span="8">
+            快递编号：{{ orderInfo.express_number || "未发货" }}
+          </el-col>
         </el-row>
       </div>
-      <h3 class="sub-title">用户信息</h3>
+      <el-divider></el-divider>
+      <h3 class="sub-title">收件人信息</h3>
       <div class="page-info">
         <el-row :gutter="20">
-          <el-col :span="8"> 姓名：{{ userInfo.name }} </el-col>
-          <el-col :span="8"> 电话：{{ userInfo.phone_number }} </el-col>
+          <el-col :span="8"> 姓名：{{ orderInfo.address_name }} </el-col>
+          <el-col :span="8"> 电话：{{ orderInfo.address_phone }} </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8"> 地址：{{ userInfo.address }} </el-col>
+          <el-col :span="8"> 地址：{{ orderInfo.address_detail }} </el-col>
         </el-row>
       </div>
+      <el-divider></el-divider>
       <h3 class="sub-title">物流信息</h3>
+      <div v-if="!expressLog.length" style="color: #999;font-size: 12px;">
+        暂无物流信息
+      </div>
       <el-timeline>
         <el-timeline-item
-          v-for="(activity, index) in activities"
+          v-for="(activity, index) in expressLog"
           :key="index"
           type="primary"
-          :timestamp="activity.timestamp"
+          :timestamp="activity.AcceptTime"
         >
-          {{ activity.content }}
+          {{ activity.AcceptStation }}
         </el-timeline-item>
       </el-timeline>
     </div>
@@ -51,25 +52,24 @@
 
 <script type="text/javascript">
 import Breadcrumb from "@/components/BasicBreadcrumb.vue";
+import orderService from "@/global/service/order.js";
 
 export default {
   data() {
     return {
       loading: false,
       orderInfo: {
-        id: 1231231233,
-        price: 96,
-        status: 1,
-        status_display: "未付款",
-        express: 234234234,
-        express_price: 10,
-        created_at_display: "2019-05-22 14:20"
+        address_detail: "",
+        address_name: "",
+        address_phone: "",
+        created_at: "",
+        express_code: "",
+        express_company: "",
+        express_number: "",
+        findex: "",
+        id: 1
       },
-      userInfo: {
-        name: "杨十一",
-        phone_number: "17611181930",
-        address: "北京市朝阳区通惠河北路 10 号大望路电影产业园 1-15 "
-      },
+      expressLog: [],
       activities: [
         {
           content: "快要到了",
@@ -86,10 +86,37 @@ export default {
       ]
     };
   },
+  created() {
+    this.getData();
+  },
   methods: {
-    handleLink() {
-      this.$router.push({ name: "OrderManageEdit", params: { id: 1 } });
+    getData() {
+      let id = this.$route.params.id;
+      orderService.show(id).then(res => {
+        this.orderInfo = res;
+        if (res.express_number && res.express_code) {
+          this.getExpressWay(res.express_number, res.express_code);
+        }
+      });
+    },
+    getExpressWay: function(express_number, express_code) {
+      orderService
+        .expressSearch({
+          express_number,
+          express_code
+        })
+        .then(res => {
+          if (res["Traces"].length) {
+            let expressLog = res["Traces"].reverse();
+            console.log(expressLog);
+            this.expressLog = expressLog;
+          }
+        });
     }
+
+    // handleLink() {
+    //   this.$router.push({ name: "OrderManageEdit", params: { id: 1 } });
+    // }
   },
   components: {
     "v-breadcrumb": Breadcrumb

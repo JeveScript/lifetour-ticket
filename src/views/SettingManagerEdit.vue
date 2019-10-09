@@ -17,7 +17,11 @@
           <el-input v-model="formData.phone" placeholder="请输入手机号" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleCreateManager"
+          <el-button
+            type="primary"
+            :disabled="disabled"
+            :loading="disabled"
+            @click="handleCreateManager"
             >保存</el-button
           >
         </el-form-item>
@@ -28,11 +32,13 @@
 
 <script type="text/javascript">
 import Breadcrumb from "@/components/BasicBreadcrumb.vue";
+import managerService from "@/global/service/manager.js";
 
 export default {
   data() {
     return {
-      loading: false,
+      loading: true,
+      disabled: false,
       rules: {
         phone: [
           { required: true, message: "请输入手机号", trigger: "blur" },
@@ -45,17 +51,43 @@ export default {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }]
       },
       formData: {
-        name: "Jax",
-        phone: "13511111111"
+        name: "",
+        phone: ""
       }
     };
+  },
+  created() {
+    let id = this.$route.params.id;
+    managerService
+      .show(id)
+      .then(res => {
+        this.formData = res;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
   },
   methods: {
     handleCreateManager() {
       this.$refs.userForm.validate(valid => {
         if (valid) {
-          this.$message.success("编辑成功");
-          this.$router.push({ name: "SettingManager" });
+          let id = this.$route.params.id;
+          let params = {
+            name: this.formData.name,
+            phone: this.formData.phone,
+            password: this.formData.password
+          };
+
+          this.disabled = true;
+          managerService
+            .update(id, params)
+            .then(() => {
+              this.$message.success("编辑成功");
+              this.$router.push({ name: "SettingManager" });
+            })
+            .finally(() => {
+              this.disabled = false;
+            });
         }
       });
     }

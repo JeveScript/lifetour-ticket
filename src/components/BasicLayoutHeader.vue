@@ -7,17 +7,19 @@
     </div>
     <div class="header-bd"></div>
     <div class="header-ft">
-      <div class="bar-info-container">
+      <div class="bar-info-container" v-if="false">
         <i class="el-icon-question"></i>
       </div>
-      <el-dropdown style="height: 100%;">
+      <el-dropdown style="height: 100%;" @command="handleCommand">
         <div class="bar-info-container">
           <i class="el-icon-user-solid userInfo-avatar"></i>
-          <span class="userInfo-name">Jax</span>
+          <span class="userInfo-name">{{ userInfo.user_name }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-video-pause">退出</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-video-pause" command="Logout"
+            >退出</el-dropdown-item
+          >
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -25,6 +27,7 @@
 </template>
 
 <script>
+import DataStore from "@/global/storage/index.js";
 export default {
   props: {
     collapse: {
@@ -32,9 +35,25 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      userInfo: {}
+    };
+  },
+  created: function() {
+    let userInfo = DataStore.getUserInfo() || {};
+    this.userInfo = userInfo;
+  },
   methods: {
     handleCollapse() {
       this.$emit("update:collapse", !this.collapse);
+    },
+    handleCommand(command) {
+      const handleName = `handle${command}`;
+      this[handleName]();
+    },
+    handleLogout() {
+      DataStore.clear();
     }
   }
 };

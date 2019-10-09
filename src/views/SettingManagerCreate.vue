@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <v-breadcrumb title="创建管理员" />
+    <v-breadcrumb />
     <div class="page-content" v-loading="loading">
       <el-form
         :model="formData"
@@ -13,11 +13,22 @@
         <el-form-item label="真实姓名" prop="name" style="width:460px;">
           <el-input v-model="formData.name" placeholder="请输入姓名" />
         </el-form-item>
-        <el-form-item label="手机号" prop="phone" style="width:460px;">
-          <el-input v-model="formData.phone" placeholder="请输入手机号" />
+        <el-form-item label="手机号码" prop="phone" style="width:460px;">
+          <el-input v-model="formData.phone" placeholder="请输入手机号码" />
+        </el-form-item>
+        <el-form-item label="密码" prop="phone" style="width:460px;">
+          <el-input
+            v-model="formData.password"
+            type="password"
+            show-password
+            placeholder="请输入管理员密码"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleCreateManager"
+          <el-button
+            type="primary"
+            @click="handleCreateManager"
+            :disabled="disabled"
             >添加</el-button
           >
         </el-form-item>
@@ -28,10 +39,12 @@
 
 <script type="text/javascript">
 import Breadcrumb from "@/components/BasicBreadcrumb.vue";
+import managerService from "@/global/service/manager.js";
 
 export default {
   data() {
     return {
+      disabled: false,
       loading: false,
       rules: {
         phone: [
@@ -42,11 +55,13 @@ export default {
             trigger: "blur"
           }
         ],
-        name: [{ required: true, message: "请输入姓名", trigger: "blur" }]
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
       },
       formData: {
         name: "",
-        phone: ""
+        phone: "",
+        password: ""
       }
     };
   },
@@ -54,8 +69,21 @@ export default {
     handleCreateManager() {
       this.$refs.userForm.validate(valid => {
         if (valid) {
-          this.$message.success("创建成功");
-          this.$router.push({ name: "SettingManager" });
+          let params = {
+            name: this.formData.name,
+            phone: this.formData.phone,
+            password: this.formData.password
+          };
+          this.disabled = true;
+          managerService
+            .create(params)
+            .then(() => {
+              this.$message.success("创建成功");
+              this.$router.push({ name: "SettingManager" });
+            })
+            .finally(() => {
+              this.disabled = false;
+            });
         }
       });
     }
