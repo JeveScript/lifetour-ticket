@@ -5,7 +5,7 @@ class MyStorage {
   }
 
   // exp/秒，默认 60 * 60 * 24 = 1 天
-  set(key, value, exp = 60 * 60 * 24) {
+  set(key, value, exp = 60 * 60 * 24 * 7) {
     const timestamp = Date.now();
     const data = JSON.stringify({ value, exp, timestamp });
     const prefixKey = this.prefix + key;

@@ -10,6 +10,9 @@ const orderService = {
   },
   expressSearch: function(params) {
     return request.get(API.expressSearch, params);
+  },
+  expressUpdate: function(id, params) {
+    return request.put(API.orderExpress(id), params);
   }
 };
 
