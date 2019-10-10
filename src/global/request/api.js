@@ -1,5 +1,5 @@
-const PREFIX = "http://localhost:3001/api";
-// const PREFIX = "https://api.lifetour.com.cn/api";
+// const PREFIX = "http://localhost:3001/api";
+const PREFIX = "https://api.lifetour.com.cn/api";
 
 const API = {
   authLogin: `${PREFIX}/auth/login`,
