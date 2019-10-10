@@ -18,12 +18,10 @@
             >
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="类型：">
+          <el-form-item label="核销情况：">
             <el-select v-model="form.status">
-              <el-option label="待处理" :value="0" />
-              <el-option label="已发货" :value="1" />
-              <el-option label="已完成" :value="2" />
-              <el-option label="退换中" :value="3" />
+              <el-option label="未消核" :value="0" />
+              <el-option label="已消核" :value="1" />
             </el-select>
           </el-form-item>
           <el-form-item label="卡券号码">
@@ -45,6 +43,12 @@
               placeholder="请输入收件人手机号"
             ></el-input>
           </el-form-item>
+          <el-form-item label="发货情况：">
+            <el-select v-model="form.express_status">
+              <el-option label="未发货" :value="0" />
+              <el-option label="已发货" :value="1" />
+            </el-select>
+          </el-form-item>
           <div>
             <el-form-item>
               <el-button type="primary" @click="getData">查询</el-button>
@@ -63,12 +67,17 @@
         ></el-table-column>
         <el-table-column prop="express_number" label="快递单号">
           <template slot-scope="scope">
-            {{ scope.row.express_number || "未发货" }}
+            <span v-if="scope.row.express_number">{{
+              scope.row.express_number
+            }}</span>
+            <el-tag v-else type="danger">未发货</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态">
+        <el-table-column prop="status" label="核销">
           <template slot-scope="scope">
-            {{ statusDisplay(scope.row.status) }}
+            <el-tag :type="scope.row.status ? 'success' : 'warning'">{{
+              statusDisplay(scope.row.status)
+            }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -107,6 +116,7 @@ export default {
         address_name: "",
         address_phone: "",
         express_number: "",
+        express_status: "",
         findex: "",
         status: "",
         date: []
@@ -158,10 +168,11 @@ export default {
       let params = {
         current_page: this.pagination.currentPage,
         page_size: this.pagination.pageSize,
-        status: this.form.status,
         address_name: this.form.address_name,
         address_phone: this.form.address_phone,
         express_number: this.form.express_number,
+        express_status: this.form.express_status,
+        status: this.form.status,
         findex: this.form.findex
       };
 
@@ -184,11 +195,12 @@ export default {
         });
     },
     handleReset() {
-      this.form.status = "";
+      this.form.express_status = "";
       this.form.address_name = "";
       this.form.address_phone = "";
       this.form.express_number = "";
       this.form.findex = "";
+      this.form.status = "";
       this.form.date = [];
       this.pagination.currentPage = 1;
       this.getData();
