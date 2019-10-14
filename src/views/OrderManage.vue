@@ -18,7 +18,7 @@
             >
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="核销情况：">
+          <el-form-item label="核销情况：" v-if="false">
             <el-select v-model="form.status">
               <el-option label="未消核" :value="0" />
               <el-option label="已消核" :value="1" />
@@ -73,7 +73,7 @@
             <el-tag v-else type="danger">未发货</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="核销">
+        <el-table-column prop="status" label="核销" v-if="false">
           <template slot-scope="scope">
             <el-tag :type="scope.row.status ? 'success' : 'warning'">{{
               statusDisplay(scope.row.status)

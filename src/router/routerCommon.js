@@ -5,7 +5,7 @@ const NotFound = () =>
 const ServiceError = () =>
   import(/* webpackChunkName: "error" */ "@/views/ErrorService.vue");
 
-const defaultSuffixTitle = " - 嘻嘻😁";
+const defaultSuffixTitle = " - 人生无限，增长无限";
 export default [
   // {
   //   path: '/',

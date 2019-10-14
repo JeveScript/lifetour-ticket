@@ -9,12 +9,14 @@ const OrderManageItem = () =>
   import(/* webpackChunkName: "order" */ "@/views/OrderManageItem.vue");
 const OrderManageEdit = () =>
   import(/* webpackChunkName: "order" */ "@/views/OrderManageEdit.vue");
-const SettingManager = () =>
-  import(/* webpackChunkName: "setting" */ "@/views/SettingManager.vue");
-const SettingManagerCreate = () =>
-  import(/* webpackChunkName: "setting" */ "@/views/SettingManagerCreate.vue");
-const SettingManagerEdit = () =>
-  import(/* webpackChunkName: "setting" */ "@/views/SettingManagerEdit.vue");
+
+// const SettingManager = () =>
+//  import(/* webpackChunkName: "setting" */ "@/views/SettingManager.vue");
+// const SettingManagerCreate = () =>
+//   import(/* webpackChunkName: "setting" */ "@/views/SettingManagerCreate.vue");
+// const SettingManagerEdit = () =>
+//   import(/* webpackChunkName: "setting" */ "@/views/SettingManagerEdit.vue");
+
 const defaultSuffixTitle = " - 人生无限，增长无限";
 
 const permissionRoutes = [
@@ -76,66 +78,66 @@ const permissionRoutes = [
         }
       }
     ]
-  },
-  {
-    path: "/setting",
-    name: "Setting",
-    component: BasicLayout,
-    meta: {
-      nav: {
-        icon: "el-icon-setting",
-        title: "设置"
-      },
-      breadcrumb: {
-        title: "设置",
-        replace: false
-      }
-    },
-    children: [
-      {
-        path: "/setting/manager",
-        name: "SettingManager",
-        component: SettingManager,
-        permission: "setting-manager",
-        meta: {
-          title: `管理员${defaultSuffixTitle}`,
-          nav: {
-            title: "管理员"
-          },
-          breadcrumb: {
-            title: "管理员",
-            replace: false
-          }
-        }
-      },
-      {
-        path: "/setting/manager/create",
-        name: "SettingManagerCreate",
-        component: SettingManagerCreate,
-        permission: "setting-manager",
-        meta: {
-          title: `添加子管理员${defaultSuffixTitle}`,
-          breadcrumb: {
-            title: "创建",
-            replace: false
-          }
-        }
-      },
-      {
-        path: "/setting/manager/:id/edit",
-        name: "SettingManagerEdit",
-        component: SettingManagerEdit,
-        permission: "setting-manager",
-        meta: {
-          title: `编辑子管理员${defaultSuffixTitle}`,
-          breadcrumb: {
-            title: "编辑",
-            replace: false
-          }
-        }
-      }
-    ]
   }
+  // {
+  //   path: "/setting",
+  //   name: "Setting",
+  //   component: BasicLayout,
+  //   meta: {
+  //     nav: {
+  //       icon: "el-icon-setting",
+  //       title: "设置"
+  //     },
+  //     breadcrumb: {
+  //       title: "设置",
+  //       replace: false
+  //     }
+  //   },
+  //   children: [
+  //     {
+  //       path: "/setting/manager",
+  //       name: "SettingManager",
+  //       component: SettingManager,
+  //       permission: "setting-manager",
+  //       meta: {
+  //         title: `管理员${defaultSuffixTitle}`,
+  //         nav: {
+  //           title: "管理员"
+  //         },
+  //         breadcrumb: {
+  //           title: "管理员",
+  //           replace: false
+  //         }
+  //       }
+  //     },
+  //     {
+  //       path: "/setting/manager/create",
+  //       name: "SettingManagerCreate",
+  //       component: SettingManagerCreate,
+  //       permission: "setting-manager",
+  //       meta: {
+  //         title: `添加子管理员${defaultSuffixTitle}`,
+  //         breadcrumb: {
+  //           title: "创建",
+  //           replace: false
+  //         }
+  //       }
+  //     },
+  //     {
+  //       path: "/setting/manager/:id/edit",
+  //       name: "SettingManagerEdit",
+  //       component: SettingManagerEdit,
+  //       permission: "setting-manager",
+  //       meta: {
+  //         title: `编辑子管理员${defaultSuffixTitle}`,
+  //         breadcrumb: {
+  //           title: "编辑",
+  //           replace: false
+  //         }
+  //       }
+  //     }
+  //   ]
+  // }
 ];
 
 export default permissionRoutes;
