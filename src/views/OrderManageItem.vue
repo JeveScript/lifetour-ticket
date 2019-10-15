@@ -179,18 +179,29 @@ export default {
 
       this.loading = true;
       this.dialogVisible = false;
-      console.log(express_code, express_number, express_company);
+      let findex = this.orderInfo.findex;
+      let address_phone = this.orderInfo.address_phone;
+      console.log(
+        express_code,
+        express_number,
+        express_company,
+        findex,
+        address_phone
+      );
 
       orderService
         .expressUpdate(id, {
           express_code,
           express_number,
-          express_company
+          express_company,
+          address_phone,
+          findex
         })
         .then(() => {
           this.orderInfo.express_code = express_code;
           this.orderInfo.express_number = express_number;
-          this.$message.success("快递单号更新成功");
+          this.orderInfo.express_company = express_company;
+          this.$message.success("快递单号更新成功,短信通知已发送");
           this.getExpressWay(express_number, express_code);
         })
         .catch(() => {
@@ -200,9 +211,6 @@ export default {
           this.loading = false;
         });
     }
-    // handleLink() {
-    //   this.$router.push({ name: "OrderManageEdit", params: { id: 1 } });
-    // }
   },
   components: {
     "v-breadcrumb": Breadcrumb
