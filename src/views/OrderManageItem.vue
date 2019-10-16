@@ -11,6 +11,12 @@
           >{{ orderInfo.express_number ? "修改快递单号" : "发货" }}</el-button
         >
       </div>
+      <h3 class="sub-title">商品信息</h3>
+      <div class="page-info">
+        <el-row :gutter="20">
+          <el-col :span="16">商品名称：{{ goodsInfo.name }} </el-col>
+        </el-row>
+      </div>
       <h3 class="sub-title">订单信息</h3>
       <div class="page-info">
         <el-row :gutter="20">
@@ -27,6 +33,7 @@
           <el-col :span="8">
             快递编号：{{ orderInfo.express_number || "未发货" }}
           </el-col>
+          <el-col :span="8">兑换人电话：{{ orderInfo.user_phone }}</el-col>
         </el-row>
       </div>
       <el-divider></el-divider>
@@ -107,6 +114,7 @@ export default {
         findex: "",
         id: 1
       },
+      goodsInfo: {},
       expressLog: [],
       expressForm: {
         express_code: "",
@@ -140,6 +148,7 @@ export default {
       let id = this.$route.params.id;
       orderService.show(id).then(res => {
         this.orderInfo = res;
+        this.goodsInfo = res.goods;
         if (res.express_number && res.express_code) {
           this.getExpressWay(res.express_number, res.express_code);
         }
@@ -180,21 +189,14 @@ export default {
       this.loading = true;
       this.dialogVisible = false;
       let findex = this.orderInfo.findex;
-      let address_phone = this.orderInfo.address_phone;
-      console.log(
-        express_code,
-        express_number,
-        express_company,
-        findex,
-        address_phone
-      );
+      let user_phone = this.orderInfo.user_phone;
 
       orderService
         .expressUpdate(id, {
           express_code,
           express_number,
           express_company,
-          address_phone,
+          user_phone,
           findex
         })
         .then(() => {

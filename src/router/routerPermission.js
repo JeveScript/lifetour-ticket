@@ -33,7 +33,7 @@ const permissionRoutes = [
     meta: {
       breadcrumb: {
         title: "订单",
-        replace: false
+        replace: true
       },
       nav: {
         icon: "el-icon-tickets",
