@@ -1,9 +1,16 @@
 import commonRoutes, { matchAllRouter } from "./routerCommon";
 import permissionRoutes from "./routerPermission";
+import DataStore from "@/global/storage/index";
 
 // 权限返回例子，需要请求返回 Promise
-const fetchPermission = () =>
-  Promise.resolve(["general-information", "order-manage", "setting-manager"]);
+const fetchPermission = () => {
+  let userInfo = DataStore.getUserInfo();
+  let permissions =
+    userInfo.role === 1
+      ? ["order-manage", "setting-manager"]
+      : ["order-manage"];
+  return permissions;
+};
 
 // 权限路由过滤
 const filterPermissionRoutes = (routes, permissions) => {
@@ -29,7 +36,7 @@ const filterPermissionRoutes = (routes, permissions) => {
 
 // 返回过滤后的权限路由
 const fetchFilterPermissionRoutes = async () => {
-  const permissions = await fetchPermission();
+  const permissions = fetchPermission();
   const routes = permissionRoutes;
   return filterPermissionRoutes(routes, permissions);
 };

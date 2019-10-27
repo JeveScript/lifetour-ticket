@@ -8,7 +8,9 @@ const API = {
   order: `${PREFIX}/order`,
   orderItem: id => `${PREFIX}/order/${id}`,
   orderExpress: id => `${PREFIX}/order/${id}/express`,
-  expressSearch: `${PREFIX}/common/express/search`
+  expressSearch: `${PREFIX}/common/express/search`,
+  company: `${PREFIX}/company`,
+  companyItem: id => `${PREFIX}/company/${id}`
 };
 
 export default API;

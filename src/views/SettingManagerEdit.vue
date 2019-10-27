@@ -16,6 +16,14 @@
         <el-form-item label="手机号" prop="phone" style="width:460px;">
           <el-input v-model="formData.phone" placeholder="请输入手机号" />
         </el-form-item>
+        <el-form-item label="密码" prop="phone" style="width:460px;">
+          <el-input
+            v-model="formData.password"
+            type="password"
+            show-password
+            placeholder="请输入管理员密码"
+          />
+        </el-form-item>
         <el-form-item>
           <el-button
             type="primary"
@@ -48,11 +56,13 @@ export default {
             trigger: "blur"
           }
         ],
-        name: [{ required: true, message: "请输入姓名", trigger: "blur" }]
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
       },
       formData: {
         name: "",
-        phone: ""
+        phone: "",
+        password: ""
       }
     };
   },
@@ -97,5 +107,3 @@ export default {
   }
 };
 </script>
-
-<style type="text/css" lang="less" scoped></style>

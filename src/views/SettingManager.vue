@@ -10,6 +10,11 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="phone" label="账户"> </el-table-column>
         <el-table-column prop="name" label="姓名"> </el-table-column>
+        <el-table-column prop="role" label="角色">
+          <template slot-scope="scope">
+            {{ scope.row.role === 1 ? "总管理员" : "子管理员" }}
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="handleEditManager(scope.row)"

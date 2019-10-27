@@ -4,6 +4,16 @@
     <div class="page-content" v-loading="loading">
       <div>
         <el-form inline label-width="100px">
+          <el-form-item label="公司：" v-if="companySelect">
+            <el-select v-model="form.company_id" placeholder="请选择公司">
+              <el-option
+                v-for="item in companys"
+                :label="item.name"
+                :value="item.id"
+                :key="item.id"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="时间：">
             <el-date-picker
               v-model="form.date"
@@ -65,6 +75,8 @@
           prop="address_phone"
           label="联系方式"
         ></el-table-column>
+        <el-table-column prop="user_phone" label="兑换人手机号">
+        </el-table-column>
         <el-table-column prop="express_number" label="快递单号">
           <template slot-scope="scope">
             <span v-if="scope.row.express_number">{{
@@ -107,12 +119,17 @@
 <script type="text/javascript">
 import Breadcrumb from "@/components/BasicBreadcrumb.vue";
 import orderService from "@/global/service/order.js";
+import companyService from "@/global/service/company.js";
+import DataStore from "@/global/storage/index";
 
 export default {
   data() {
     return {
       loading: true,
+      companySelect: false,
+      companys: [],
       form: {
+        company_id: "",
         address_name: "",
         address_phone: "",
         express_number: "",
@@ -161,13 +178,26 @@ export default {
     };
   },
   created() {
+    let userInfo = DataStore.getUserInfo();
+    if (userInfo.company_id) {
+      this.form.company_id = userInfo.company_id;
+    } else {
+      this.getCompanys();
+      this.companySelect = true;
+    }
     this.getData();
   },
   methods: {
+    getCompanys() {
+      companyService.list().then(res => {
+        this.companys = res;
+      });
+    },
     getData() {
       let params = {
         current_page: this.pagination.currentPage,
         page_size: this.pagination.pageSize,
+        company_id: this.form.company_id,
         address_name: this.form.address_name,
         address_phone: this.form.address_phone,
         express_number: this.form.express_number,
@@ -203,6 +233,9 @@ export default {
       this.form.status = "";
       this.form.date = [];
       this.pagination.currentPage = 1;
+      if (this.companySelect) {
+        this.form.company_id = "";
+      }
       this.getData();
     },
     statusDisplay(status) {

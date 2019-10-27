@@ -13,7 +13,7 @@
       <el-dropdown style="height: 100%;" @command="handleCommand">
         <div class="bar-info-container">
           <i class="el-icon-user-solid userInfo-avatar"></i>
-          <span class="userInfo-name">{{ userInfo.user_name }}</span>
+          <span class="userInfo-name">{{ userInfo.name }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
         <el-dropdown-menu slot="dropdown">

@@ -31,7 +31,7 @@ appRouter.beforeEach(async (to, from, next) => {
     return;
   }
 
-  if (!appRouter.hasAddRouter) {
+  if (!appRouter.hasAddRouter && TOKEN) {
     const filterRoutes = await fetchFilterPermissionRoutes();
     appRouter.hasAddRouter = true;
     appRouter.addRoutes(filterRoutes.concat(matchAllRouter));
