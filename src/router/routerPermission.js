@@ -7,7 +7,11 @@ const OrderManage = () =>
   import(/* webpackChunkName: "order" */ "@/views/OrderManage.vue");
 const OrderManageItem = () =>
   import(/* webpackChunkName: "order" */ "@/views/OrderManageItem.vue");
-
+const Goods = () => import(/* webpackChunkName: "goods" */ "@/views/Goods.vue");
+const GoodsItem = () =>
+  import(/* webpackChunkName: "goods" */ "@/views/GoodsItem.vue");
+const Ticket = () =>
+  import(/* webpackChunkName: "ticket" */ "@/views/Ticket.vue");
 const SettingManager = () =>
   import(/* webpackChunkName: "setting" */ "@/views/SettingManager.vue");
 const SettingManagerCreate = () =>
@@ -59,6 +63,77 @@ const permissionRoutes = [
           title: `订单详情${defaultSuffixTitle}`,
           breadcrumb: {
             title: "订单详情"
+          }
+        }
+      }
+    ]
+  },
+  {
+    path: "/ticket",
+    name: "tickets",
+    component: BasicLayout,
+    redirect: { name: "Ticket" },
+    permission: "ticket-manage",
+    meta: {
+      breadcrumb: {
+        title: "卡券",
+        replace: true
+      },
+      nav: {
+        icon: "el-icon-s-ticket",
+        title: "卡券"
+      }
+    },
+    children: [
+      {
+        path: "/ticket",
+        name: "Ticket",
+        component: Ticket,
+        meta: {
+          title: `卡券${defaultSuffixTitle}`,
+          breadcrumb: {
+            title: "所有卡券"
+          }
+        }
+      }
+    ]
+  },
+  {
+    path: "/goods",
+    name: "goods",
+    component: BasicLayout,
+    redirect: { name: "Goods" },
+    permission: "goods-manage",
+    meta: {
+      breadcrumb: {
+        title: "产品",
+        replace: true
+      },
+      nav: {
+        icon: "el-icon-goods",
+        title: "产品"
+      }
+    },
+    children: [
+      {
+        path: "/goods",
+        name: "Goods",
+        component: Goods,
+        meta: {
+          title: `产品${defaultSuffixTitle}`,
+          breadcrumb: {
+            title: "所有产品"
+          }
+        }
+      },
+      {
+        path: "/goods/:id",
+        name: "GoodsItem",
+        component: GoodsItem,
+        meta: {
+          title: `产品详情${defaultSuffixTitle}`,
+          breadcrumb: {
+            title: "产品详情"
           }
         }
       }

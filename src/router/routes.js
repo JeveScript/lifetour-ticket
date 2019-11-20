@@ -7,7 +7,7 @@ const fetchPermission = () => {
   let userInfo = DataStore.getUserInfo();
   let permissions =
     userInfo.role === 1
-      ? ["order-manage", "setting-manager"]
+      ? ["goods-manage", "order-manage", "setting-manager", "ticket-manage"]
       : ["order-manage"];
   return permissions;
 };
